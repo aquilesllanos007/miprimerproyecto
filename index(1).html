@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagramador Entidad-Relación</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- TOOLBAR SUPERIOR -->
+    <header class="toolbar">
+        <!-- Grupo: Archivo -->
+        <div class="toolbar-group">
+            <button class="toolbar-btn" id="btnNew" title="Nuevo diagrama">
+                <span class="toolbar-icon">📄</span>
+                <span class="toolbar-label">Nuevo</span>
+            </button>
+            <button class="toolbar-btn" id="btnSave" title="Guardar diagrama">
+                <span class="toolbar-icon">💾</span>
+                <span class="toolbar-label">Guardar</span>
+            </button>
+            <button class="toolbar-btn" id="btnLoad" title="Cargar diagrama">
+                <span class="toolbar-icon">📂</span>
+                <span class="toolbar-label">Abrir</span>
+            </button>
+            <button class="toolbar-btn" id="btnExportPNG" title="Exportar como PNG">
+                <span class="toolbar-icon">🖼️</span>
+                <span class="toolbar-label">Exportar</span>
+            </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        <!-- Grupo: Edición -->
+        <div class="toolbar-group">
+            <button class="toolbar-btn" id="btnUndo" title="Deshacer (Ctrl+Z)">
+                <span class="toolbar-icon">↶</span>
+                <span class="toolbar-label">Deshacer</span>
+            </button>
+            <button class="toolbar-btn" id="btnRedo" title="Rehacer (Ctrl+Y)">
+                <span class="toolbar-icon">↷</span>
+                <span class="toolbar-label">Rehacer</span>
+            </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        <!-- Grupo: Vista -->
+        <div class="toolbar-group">
+            <button class="toolbar-btn" id="btnZoomIn" title="Acercar zoom">
+                <span class="toolbar-icon">🔍+</span>
+            </button>
+            <button class="toolbar-btn" id="btnZoomOut" title="Alejar zoom">
+                <span class="toolbar-icon">🔍−</span>
+            </button>
+            <button class="toolbar-btn" id="btnZoom100" title="Zoom 100%">
+                <span class="toolbar-label">100%</span>
+            </button>
+            <button class="toolbar-btn" id="btnCenter" title="Centrar canvas">
+                <span class="toolbar-icon">🎯</span>
+            </button>
+        </div>
+
+        <div class="toolbar-separator"></div>
+
+        <!-- Grupo: Utilidades -->
+        <div class="toolbar-group">
+            <button class="toolbar-btn danger" id="btnClearAll" title="Limpiar todo el diagrama">
+                <span class="toolbar-icon">🗑️</span>
+                <span class="toolbar-label">Limpiar</span>
+            </button>
+            <button class="toolbar-btn" id="btnHelp" title="Ayuda y atajos">
+                <span class="toolbar-icon">ℹ️</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Barra lateral con símbolos -->
+        <aside class="sidebar">
+            <h3>Elementos DER</h3>
+            <div class="symbol-buttons">
+                
+                <!-- SECCIÓN: DER BÁSICO -->
+                <div class="section-header">
+                    <span class="section-icon">📦</span>
+                    <span class="section-title">DER BÁSICO</span>
+                </div>
+                
+                <!-- ENTIDADES -->
+                <button class="symbol-btn" data-type="entidad" data-weak="false">
+                    <span class="symbol">□</span>
+                    <span class="label">Entidad</span>
+                </button>
+                <button class="symbol-btn" data-type="entidad" data-weak="true">
+                    <span class="symbol">⊡</span>
+                    <span class="label">Entidad débil</span>
+                </button>
+                
+                <!-- ATRIBUTOS -->
+                <button class="symbol-btn" data-type="atributo" data-attribute-type="normal">
+                    <span class="symbol">○</span>
+                    <span class="label">Atributo</span>
+                </button>
+                <button class="symbol-btn" data-type="atributo" data-attribute-type="primary-key">
+                    <span class="symbol">⊚</span>
+                    <span class="label">Clave primaria</span>
+                </button>
+                <button class="symbol-btn" data-type="atributo" data-attribute-type="multivalued">
+                    <span class="symbol">◎</span>
+                    <span class="label">Multivaluado</span>
+                </button>
+                <button class="symbol-btn" data-type="atributo" data-attribute-type="derived">
+                    <span class="symbol">◌</span>
+                    <span class="label">Derivado</span>
+                </button>
+                
+                <!-- RELACIONES -->
+                <button class="symbol-btn" data-type="relacion" data-weak="false">
+                    <span class="symbol">◇</span>
+                    <span class="label">Relación</span>
+                </button>
+                <button class="symbol-btn" data-type="relacion" data-weak="true">
+                    <span class="symbol">⬦</span>
+                    <span class="label">Relación débil</span>
+                </button>
+                
+                <!-- CARDINALIDAD -->
+                <button class="symbol-btn" data-type="cardinalidad">
+                    <span class="symbol">📊</span>
+                    <span class="label">Cardinalidad</span>
+                </button>
+                
+                <!-- SEPARADOR GRUESO -->
+                <div class="section-separator"></div>
+                
+                <!-- SECCIÓN: CONEXIONES -->
+                <div class="section-header">
+                    <span class="section-icon">🔗</span>
+                    <span class="section-title">CONEXIONES</span>
+                </div>
+                
+                <button class="action-btn" id="toggleConnectSingle">
+                    <span class="symbol">─</span>
+                    <span class="label">Línea simple</span>
+                </button>
+                <button class="action-btn" id="toggleConnectDouble">
+                    <span class="symbol">═</span>
+                    <span class="label">Línea doble</span>
+                </button>
+                <button class="action-btn danger" id="clearConnections">
+                    <span class="symbol">🗑️</span>
+                    <span class="label">Eliminar conexiones</span>
+                </button>
+                
+                <!-- SEPARADOR GRUESO -->
+                <div class="section-separator"></div>
+                
+                <!-- SECCIÓN: DER EXTENDIDO -->
+                <div class="section-header">
+                    <span class="section-icon">🏗️</span>
+                    <span class="section-title">DER EXTENDIDO</span>
+                </div>
+                
+                <!-- JERARQUÍAS ISA -->
+                <button class="symbol-btn" data-type="jerarquia" data-hierarchy-type="total_exclusive">
+                    <span class="symbol">▽</span>
+                    <span class="label">ISA Total Exclusiva</span>
+                </button>
+                <button class="symbol-btn" data-type="jerarquia" data-hierarchy-type="total_overlapping">
+                    <span class="symbol">▽</span>
+                    <span class="label">ISA Total Solapada</span>
+                </button>
+                <button class="symbol-btn" data-type="jerarquia" data-hierarchy-type="partial_exclusive">
+                    <span class="symbol">▽</span>
+                    <span class="label">ISA Parcial Exclusiva</span>
+                </button>
+                <button class="symbol-btn" data-type="jerarquia" data-hierarchy-type="partial_overlapping">
+                    <span class="symbol">▽</span>
+                    <span class="label">ISA Parcial Solapada</span>
+                </button>
+                
+                <!-- CATEGORÍA -->
+                <button class="symbol-btn" data-type="categoria">
+                    <span class="symbol">⊚</span>
+                    <span class="label">Categoría (U)</span>
+                </button>
+
+                <!-- AGREGACIÓN -->
+                <button class="symbol-btn" data-type="agregacion">
+                    <span class="symbol">▢</span>
+                    <span class="label">Agregación</span>
+                </button>
+                
+                <!-- SEPARADOR GRUESO -->
+                <div class="section-separator"></div>
+                
+                <!-- SECCIÓN: RESTRICCIONES (DERE) -->
+                <div class="section-header">
+                    <span class="section-icon">⚠️</span>
+                    <span class="section-title">RESTRICCIONES (DERE)</span>
+                </div>
+                
+                <button class="symbol-btn" data-type="restriccion-exclusividad">
+                    <span class="symbol">⌒</span>
+                    <span class="label">Arco Exclusividad</span>
+                </button>
+                
+                <button class="symbol-btn" data-type="restriccion-inclusividad">
+                    <span class="symbol">↪</span>
+                    <span class="label">Arco Inclusividad</span>
+                </button>
+                
+                <button class="action-btn" id="btnExclusion">
+                    <span class="symbol">┈</span>
+                    <span class="label">Exclusión</span>
+                </button>
+                
+                <button class="action-btn" id="btnInclusion">
+                    <span class="symbol">→</span>
+                    <span class="label">Inclusión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Panel central (área de trabajo) -->
+        <main class="canvas-area" id="canvasArea">
+            <canvas id="mainCanvas"></canvas>
+        </main>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/entities.js"></script>
+    <script src="js/attributes.js"></script>
+    <script src="js/relationships.js"></script>
+    <script src="js/connections.js"></script>
+    <script src="js/cardinality.js"></script>
+    <script src="js/hierarchies.js"></script>
+    <script src="js/categories.js"></script>
+    <script src="js/aggregations.js"></script>
+    <script src="js/constraints.js"></script>
+    <script src="js/toolbar.js"></script>
+    <script src="js/main.js"></script>
+
+    
+</body>
+</html>
